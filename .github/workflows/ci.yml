@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         # 18 = AGENTS.md minimum / Render default line, 22 = current LTS
-        node-version: [18, 22]
+        # Baileys 6.7.24+ requires Node >= 20
+        node-version: [20, 22]
     steps:
       - uses: actions/checkout@v4
 
