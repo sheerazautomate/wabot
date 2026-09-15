@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # 18 = AGENTS.md minimum / Render default line, 22 = current LTS
+        node-version: [18, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies (reproducible, from lockfile)
+        run: npm ci
+
+      - name: Syntax check
+        run: node --check index.js
+
+      - name: Run tests
+        run: npm test
