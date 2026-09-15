@@ -44,7 +44,7 @@ npm ci
 npm test
 ```
 
-CI (GitHub Actions) runs the same tests on every push and PR, on Node 18 and 22. Don't merge to `main` with a red build.
+CI (GitHub Actions) runs the same tests on every push and PR, on Node 20 and 22 (Baileys 6.7.24+ requires Node >= 20). Don't merge to `main` with a red build.
 
 ## How auth works
 
