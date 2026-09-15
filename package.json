@@ -1,0 +1,18 @@
+{
+  "name": "baileys-render-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp bot using Baileys with MongoDB session persistence, built for Render free tier",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.9",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "pino": "^9.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
