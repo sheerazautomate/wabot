@@ -21,16 +21,22 @@ const { MongoClient } = require('mongodb');
 // ---------------------------------------------------------------------------
 // A. Express health-check server (keeps Render happy + enables uptime pings)
 // ---------------------------------------------------------------------------
-const app = express();
-const PORT = process.env.PORT || 3000;
+function createHealthServer() {
+  const app = express();
 
-app.get('/', (req, res) => {
-  res.status(200).send('WhatsApp Bot is running!');
-});
+  app.get('/', (req, res) => {
+    res.status(200).send('WhatsApp Bot is running!');
+  });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  return app;
+}
+
+function startHealthServer() {
+  const PORT = process.env.PORT || 3000;
+  return createHealthServer().listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 // ---------------------------------------------------------------------------
 // B. MongoDB auth state handler (replaces Baileys' default file-based auth state)
@@ -189,4 +195,10 @@ async function connectToWhatsApp() {
 // ---------------------------------------------------------------------------
 // D. Entry point
 // ---------------------------------------------------------------------------
-connectToWhatsApp();
+if (require.main === module) {
+  startHealthServer();
+  connectToWhatsApp();
+}
+
+// Exported for tests only — running this file directly starts the bot.
+module.exports = { useMongoDBAuthState, createHealthServer, connectToWhatsApp };

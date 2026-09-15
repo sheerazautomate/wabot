@@ -4,7 +4,8 @@
   "description": "WhatsApp bot using Baileys with MongoDB session persistence, built for Render free tier",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.7.9",

@@ -15,7 +15,7 @@ A WhatsApp bot built with the [Baileys](https://github.com/WhiskeySockets/Bailey
 1. **Fork or clone this repo** to your own GitHub account.
 2. **Create a MongoDB Atlas M0 cluster**, create a database user, and allow network access from anywhere (`0.0.0.0/0`). Copy the connection string.
 3. **Create a Render Web Service** (free plan) connected to this repo:
-   - **Build command:** `npm install`
+   - **Build command:** `npm ci` (installs exact versions from the lockfile — reproducible deploys)
    - **Start command:** `node index.js`
 4. **Set environment variables** in the Render dashboard:
    | Variable | Value |
@@ -34,6 +34,17 @@ A WhatsApp bot built with the [Baileys](https://github.com/WhiskeySockets/Bailey
 ## Keep-Alive
 
 Render's free tier spins down after ~15 minutes of inactivity. Set up a free [UptimeRobot](https://uptimerobot.com) monitor that pings your Render URL (e.g. `https://your-app.onrender.com/`) every 5 minutes to keep the bot awake.
+
+## Development & Tests
+
+Tests protect the two things a bad deploy could silently break: the MongoDB session-persistence layer (a regression there would force a re-pair) and the health-check endpoint (a regression there gets the service spun down). They use Node's built-in test runner — no extra dependencies:
+
+```
+npm ci
+npm test
+```
+
+CI (GitHub Actions) runs the same tests on every push and PR, on Node 18 and 22. Don't merge to `main` with a red build.
 
 ## How auth works
 
