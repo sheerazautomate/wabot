@@ -31,6 +31,13 @@ A WhatsApp bot built with the [Baileys](https://github.com/WhiskeySockets/Bailey
 6. On the phone with the bot's WhatsApp account: **WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead**, then enter the pairing code.
 7. Send `ping` to the bot's number from another account — it should reply `pong!`.
 
+## Bot commands
+
+| Message | Reply |
+| --- | --- |
+| `ping` | `pong!` (proof-of-life) |
+| `bill 16157350713611` or just `16157350713611` | Fetches the MEPCO electricity bill for that 14-digit reference number from bill.pitc.com.pk and replies with a summary: name, bill month, units, amount, due date, and paid/unpaid status. |
+
 ## Deploying on Wispbyte (free panel host)
 
 This bot currently runs on [Wispbyte](https://wispbyte.com)'s free tier (512 MB RAM, NodeJS runtime). Notes specific to that setup:
