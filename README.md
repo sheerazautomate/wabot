@@ -31,6 +31,23 @@ A WhatsApp bot built with the [Baileys](https://github.com/WhiskeySockets/Bailey
 6. On the phone with the bot's WhatsApp account: **WhatsApp → Settings → Linked Devices → Link a Device → Link with phone number instead**, then enter the pairing code.
 7. Send `ping` to the bot's number from another account — it should reply `pong!`.
 
+## Deploying on Wispbyte (free panel host)
+
+This bot currently runs on [Wispbyte](https://wispbyte.com)'s free tier (512 MB RAM, NodeJS runtime). Notes specific to that setup:
+
+- **Docker image:** select `nodejs_22` in Configuration → Startup (Baileys needs Node >= 20; the default `nodejs_19` will crash).
+- **npm git-deps are blocked** on Wispbyte free nodes (`EALLOWGIT`), and Baileys depends on `libsignal` fetched from GitHub — so `npm install` cannot run there. Instead, build `node_modules` on a Linux x64 machine with Node 22 and upload it:
+  ```
+  npm ci --omit=dev
+  tar -czf deps-node22-linux.tar.gz node_modules
+  ```
+  Upload the archive via the Files tab, delete any existing `node_modules` folder, then use **Unarchive**. Redo this whenever dependencies change.
+- **Startup command:** remove the `if [ -f /home/container/package.json ]; then npm install; fi;` snippet, and pass the env vars inline at the end (quotes required):
+  ```
+  MONGODB_URI="..." BOT_PHONE_NUMBER="..." /usr/local/bin/node /home/container/index.js
+  ```
+- **Activity rule:** log into the Wispbyte panel at least once every 2 weeks or the free server is suspended. Set a recurring reminder.
+
 ## Keep-Alive
 
 Render's free tier spins down after ~15 minutes of inactivity. Set up a free [UptimeRobot](https://uptimerobot.com) monitor that pings your Render URL (e.g. `https://your-app.onrender.com/`) every 5 minutes to keep the bot awake.
